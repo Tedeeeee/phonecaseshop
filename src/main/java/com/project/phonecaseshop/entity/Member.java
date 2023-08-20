@@ -36,4 +36,7 @@ public class Member {
     @Column
     private String memberStatus;
 
+    @Column
+    private String memberRefreshToken;
+
 }

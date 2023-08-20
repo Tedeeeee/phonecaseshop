@@ -1,7 +1,7 @@
 package com.project.phonecaseshop.controller;
 
-import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.dto.MemberDto.MemberRequestDto;
+import com.project.phonecaseshop.entity.dto.MemberDto.MemberResponseDto;
 import com.project.phonecaseshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class MemberController {
     }
 
     @GetMapping("/findMember")
-    public List<Member> findMember() {
+    public List<MemberResponseDto> findMember() {
         return memberService.findMember();
     }
 }

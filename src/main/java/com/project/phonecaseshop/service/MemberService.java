@@ -2,6 +2,7 @@ package com.project.phonecaseshop.service;
 
 import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.dto.MemberDto.MemberRequestDto;
+import com.project.phonecaseshop.entity.dto.MemberDto.MemberResponseDto;
 import com.project.phonecaseshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService{
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -31,10 +32,49 @@ public class MemberService{
                 .memberStatus(memberRequestDto.getMemberStatus())
                 .build();
 
+        System.out.println(member.toString());
         memberRepository.save(member);
     }
 
-    public List<Member> findMember() {
-        return memberRepository.findAll();
+    public void updateRefreshToken(Long memberId, String memberRefreshToken) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("존재하지않는 회원입니다"));
+
+        System.out.println(member.toString());
+
+
+    }
+
+    public List<MemberResponseDto> findMembers() {
+        List<Member> all = memberRepository.findAll();
+
+        return all.stream()
+                .map(member -> MemberResponseDto.builder()
+                        .memberId(member.getMemberId())
+                        .memberEmail(member.getMemberEmail())
+                        .memberNickname(member.getMemberNickname())
+                        .memberPoint(member.getMemberPoint())
+                        .memberAddress(member.getMemberAddress())
+                        .memberDetailAddress(member.getMemberDetailAddress())
+                        .build())
+                .toList();
+    }
+
+    public List<MemberResponseDto> findMember() {
+        List<Member> all = memberRepository.findAll();
+
+        return all.stream()
+                .map(member -> MemberResponseDto.builder()
+                        .memberId(member.getMemberId())
+                        .memberEmail(member.getMemberEmail())
+                        .memberPassword(member.getMemberPassword())
+                        .memberNickname(member.getMemberNickname())
+                        .memberPoint(member.getMemberPoint())
+                        .memberAddress(member.getMemberAddress())
+                        .memberDetailAddress(member.getMemberDetailAddress())
+                        .build())
+                .toList();
+    }
+    public Member findMember(String memberEmail) {
+        return memberRepository.findByMemberEmail(memberEmail);
     }
 }

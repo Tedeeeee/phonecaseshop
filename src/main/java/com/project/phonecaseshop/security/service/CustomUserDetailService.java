@@ -1,4 +1,4 @@
-package com.project.phonecaseshop.service;
+package com.project.phonecaseshop.security.service;
 
 import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.repository.MemberRepository;
@@ -17,7 +17,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findByName(username);
+        Member member = memberRepository.findByMemberEmail(username);
 
         if (member == null) {
             throw new UsernameNotFoundException("존재하지 않는 회원입니다");
