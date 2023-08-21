@@ -24,11 +24,15 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    public int signUp(MemberRequestDto memberRequestDto) {
-        int i;
-        Member memberFind = memberRepository.findByMemberEmail(memberRequestDto.getMemberEmail());
-        if (memberFind != null) {
-            return 0;
+    public String signUp(MemberRequestDto memberRequestDto) {
+        Member existMemberEmail = memberRepository.findByMemberEmail(memberRequestDto.getMemberEmail());
+        Member existMemberNickname = memberRepository.findByMemberNickname(memberRequestDto.getMemberNickname());
+
+        if (existMemberEmail != null) {
+            return "이메일 중복을 확인 해주세요";
+        }
+        if (existMemberNickname != null) {
+            return "닉네임 중복을 확인 해주세요";
         }
 
         memberRequestDto.setMemberStatus("T");
@@ -46,7 +50,7 @@ public class MemberService {
 
         System.out.println(member.toString());
         memberRepository.save(member);
-        return 1;
+        return "성공하였습니다";
     }
 
     public int logout() {
@@ -61,6 +65,34 @@ public class MemberService {
         }
 
         return 1;
+    }
+
+    public String updateProfile(MemberRequestDto memberRequestDto) {
+        String currentMemberId = SecurityUtil.getCurrentMemberId();
+
+        Member existingMember = memberRepository.findByMemberEmail(currentMemberId);
+
+        if (existingMember == null) {
+            return "기존 회원 정보를 찾을 수 없습니다";
+        }
+
+        Member existMemberEmail = memberRepository.findByMemberEmail(memberRequestDto.getMemberEmail());
+        Member existMemberNickname = memberRepository.findByMemberNickname(memberRequestDto.getMemberNickname());
+
+        if (existMemberEmail != null) {
+            return "이메일 중복을 확인 해주세요";
+        }
+
+        if (existMemberNickname != null) {
+            return "닉네임 중복을 확인 해주세요";
+        }
+
+        existingMember.setMemberNickname(memberRequestDto.getMemberNickname());
+        existingMember.setMemberAddress(memberRequestDto.getMemberAddress());
+        existingMember.setMemberDetailAddress(memberRequestDto.getMemberDetailAddress());
+        memberRepository.save(existingMember);
+
+        return "성공했습니다";
     }
 
 
@@ -105,7 +137,6 @@ public class MemberService {
 
     public RefreshToken findRefreshToken(Long id) {
         return refreshTokenRepository.findByMemberId(id).orElse(null);
-
     }
 
 }

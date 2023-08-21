@@ -2,13 +2,16 @@ package com.project.phonecaseshop.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
+@DynamicUpdate
 public class Member {
 
     @Id
@@ -35,8 +38,5 @@ public class Member {
 
     @Column
     private String memberStatus;
-
-    @Column
-    private String memberRefreshToken;
 
 }

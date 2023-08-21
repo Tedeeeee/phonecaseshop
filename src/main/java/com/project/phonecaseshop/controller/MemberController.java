@@ -25,12 +25,12 @@ public class MemberController {
     public CommonResult signUp(@RequestBody MemberRequestDto memberRequestDto) {
         System.out.println("회원가입");
 
-        int signUpResult = memberService.signUp(memberRequestDto);
+        String signUpResult = memberService.signUp(memberRequestDto);
 
-        if (signUpResult == 1) {
-            return apiResponse.getSuccessResult(signUpResult);
+        if (signUpResult.equals("성공하였습니다")) {
+            return apiResponse.getSuccessResult(1);
         } else {
-            return apiResponse.getFailResult("500", "회원 가입 실패: 중복 검사를 진행해주세요.");
+            return apiResponse.getFailResult("500", signUpResult);
         }
     }
 
@@ -43,6 +43,16 @@ public class MemberController {
 
     // 회원정보 수정
     @PostMapping("/updateProfile")
+    public CommonResult updateProfile(@RequestBody MemberRequestDto memberRequestDto) {
+
+        String result = memberService.updateProfile(memberRequestDto);
+
+        if (result.equals("성공했습니다")) {
+            return apiResponse.getSuccessResult(1);
+        } else {
+            return apiResponse.getFailResult("500", result);
+        }
+    }
 
 
     // ==========================================
