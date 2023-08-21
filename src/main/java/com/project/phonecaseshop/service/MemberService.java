@@ -67,6 +67,23 @@ public class MemberService {
         return 1;
     }
 
+    public String withdrawal() {
+        String currentMemberId = SecurityUtil.getCurrentMemberId();
+
+        Member member = memberRepository.findByMemberEmail(currentMemberId);
+        Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByMemberId(member.getMemberId());
+
+        if (refreshTokenOptional.isEmpty()) {
+            return "실패했습니다";
+        } else {
+            RefreshToken refreshTokenDto = refreshTokenOptional.get();
+            refreshTokenRepository.deleteById(refreshTokenDto.getRefreshTokenId());
+            member.setMemberStatus("F");
+            memberRepository.save(member);
+            return "성공했습니다";
+        }
+    }
+
     public String updateProfile(MemberRequestDto memberRequestDto) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
 
@@ -117,6 +134,7 @@ public class MemberService {
                         .memberPoint(member.getMemberPoint())
                         .memberAddress(member.getMemberAddress())
                         .memberDetailAddress(member.getMemberDetailAddress())
+                        .memberStatus(member.getMemberStatus())
                         .build())
                 .toList();
     }
@@ -132,6 +150,7 @@ public class MemberService {
                 .memberAddress(member.getMemberAddress())
                 .memberDetailAddress(member.getMemberDetailAddress())
                 .memberPoint(member.getMemberPoint())
+                .memberStatus(member.getMemberStatus())
                 .build();
     }
 

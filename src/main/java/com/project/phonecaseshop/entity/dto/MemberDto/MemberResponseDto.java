@@ -17,4 +17,5 @@ public class MemberResponseDto {
     private Long memberPoint;
     private String memberAddress;
     private String memberDetailAddress;
+    private String memberStatus;
 }

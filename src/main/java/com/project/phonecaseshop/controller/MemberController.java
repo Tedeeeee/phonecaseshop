@@ -41,9 +41,26 @@ public class MemberController {
         return apiResponse.getSuccessResult(memberService.logout());
     }
 
+
+    // 회원탈퇴
+    @GetMapping("/withdrawal")
+    public CommonResult withdrawal() {
+        System.out.println("회원탈퇴");
+
+        String result = memberService.withdrawal();
+        System.out.println(result);
+
+        if (result.equals("성공했습니다")) {
+            return apiResponse.getSuccessResult(1);
+        } else {
+            return apiResponse.getFailResult("500", result);
+        }
+    }
+
     // 회원정보 수정
     @PostMapping("/updateProfile")
     public CommonResult updateProfile(@RequestBody MemberRequestDto memberRequestDto) {
+        System.out.println("정보 수정");
 
         String result = memberService.updateProfile(memberRequestDto);
 
