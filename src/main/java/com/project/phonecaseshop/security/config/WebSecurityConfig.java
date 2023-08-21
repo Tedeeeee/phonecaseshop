@@ -1,7 +1,9 @@
 package com.project.phonecaseshop.security.config;
 
 import com.project.phonecaseshop.repository.MemberRepository;
+import com.project.phonecaseshop.repository.RefreshTokenRepository;
 import com.project.phonecaseshop.security.filter.CustomAuthenticationFilter;
+import com.project.phonecaseshop.security.filter.JwtAuthenticationFilter;
 import com.project.phonecaseshop.security.handler.CustomAuthenticationFailureHandler;
 import com.project.phonecaseshop.security.handler.CustomAuthenticationSuccessHandler;
 import com.project.phonecaseshop.security.provider.CustomAuthenticationProvider;
@@ -30,6 +32,7 @@ public class WebSecurityConfig {
     private final CustomUserDetailService customUserDetailService;
     private final TokenUtil tokenUtil;
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -43,8 +46,10 @@ public class WebSecurityConfig {
 
                 .authorizeHttpRequests(request -> request.anyRequest().permitAll())
 
-                .addFilterBefore(customAuthenticationFilter(), LogoutFilter.class)
+                .addFilterAfter(customAuthenticationFilter(), LogoutFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), CustomAuthenticationFilter.class)
         ;
+
         return http.build();
     }
 
@@ -83,4 +88,8 @@ public class WebSecurityConfig {
         return new CustomAuthenticationFailureHandler();
     }
 
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(tokenUtil, memberRepository, refreshTokenRepository);
+    }
 }

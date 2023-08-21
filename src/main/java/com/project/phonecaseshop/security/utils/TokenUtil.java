@@ -145,8 +145,9 @@ public class TokenUtil {
     // memberEmail 알아오는 메소드
     public String getMemberEmailFromToken(String token) {
         Claims claims = getClaimsFormToken(token);
-        return claims.get("memberId").toString();
+        return claims.get("memberEmail").toString();
     }
+
 
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) throws IOException {
         response.setStatus(HttpServletResponse.SC_OK);
@@ -169,6 +170,5 @@ public class TokenUtil {
                     .refreshToken(refreshTokenValue)
                     .build();
             refreshTokenRepository.save(newRefreshToken);
-        }
-
+    }
 }
