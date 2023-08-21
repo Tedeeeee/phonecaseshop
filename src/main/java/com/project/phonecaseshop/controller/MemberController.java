@@ -28,6 +28,10 @@ public class MemberController {
         memberService.logout();
     }
 
+    // 회원정보 수정
+    @PostMapping("/updateProfile")
+    public
+
 
     @GetMapping("/findMembers")
     public List<MemberResponseDto> findMembers() {
