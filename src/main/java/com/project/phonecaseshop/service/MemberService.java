@@ -24,6 +24,11 @@ public class MemberService {
 
 
     public void signUp(MemberRequestDto memberRequestDto) {
+        Member memberFind = memberRepository.findByMemberEmail(memberRequestDto.getMemberEmail());
+        if (memberFind != null) {
+            throw new RuntimeException("이미 존재하는 회원입니다");
+        }
+
         memberRequestDto.setMemberStatus("T");
         memberRequestDto.setMemberPassword(passwordEncoder.encode(memberRequestDto.getMemberPassword()));
 

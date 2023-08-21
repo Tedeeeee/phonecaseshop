@@ -25,6 +25,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -33,8 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private static final List<String> EXCLUDE_URL = Collections.unmodifiableList(Arrays.asList(
-        "/login", "/members/signup"
+    private static final List<Pattern> EXCLUDE_PATTERNS = Collections.unmodifiableList(Arrays.asList(
+            Pattern.compile("/login"),
+            Pattern.compile("/members/findMember/\\d+"),
+            Pattern.compile("/members/signup"),
+            Pattern.compile("/members/findMembers")
     ));
 
     @Override
@@ -148,6 +153,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
+        String servletPath = request.getServletPath();
+
+        return EXCLUDE_PATTERNS.stream().anyMatch(pattern -> pattern.matcher(servletPath).matches());
     }
 }

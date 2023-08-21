@@ -18,11 +18,13 @@ public class MemberController {
     // 회원가입
     @PostMapping("/signup")
     public void signUp(@RequestBody MemberRequestDto memberRequestDto) {
+        System.out.println("회원가입");
         memberService.signUp(memberRequestDto);
     }
     // 로그아웃
     @GetMapping("/logout")
     public void logout() {
+        System.out.println("로그아웃");
         memberService.logout();
     }
 
