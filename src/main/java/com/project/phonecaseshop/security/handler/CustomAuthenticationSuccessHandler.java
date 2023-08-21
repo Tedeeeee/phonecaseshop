@@ -31,16 +31,15 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         Member member = memberRepository.findByMemberEmail(memberEmail);
 
-
         if (member != null) {
             if (member.getMemberStatus().equals("T")) {
-                // refreshToken 새로 주기
+                tokenUtil.insertRefreshToken(member.getMemberId(), refreshToken);
                 tokenUtil.sendAccessAndRefreshToken(response, accessToken, refreshToken);
             } else {
                 throw new RuntimeException("탈퇴한 회원입니다");
             }
         } else {
-            throw new RuntimeException("존재하지 않는 회원입니다.");
+            throw new RuntimeException("존재하지 않는 회원입니다1.");
         }
 
         log.info("로그인에 성공하였습니다. 이메일 : {}", memberEmail);

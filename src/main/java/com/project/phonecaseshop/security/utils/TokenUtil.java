@@ -1,7 +1,10 @@
 package com.project.phonecaseshop.security.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.phonecaseshop.entity.RefreshToken;
+import com.project.phonecaseshop.entity.dto.refreshToken.RefreshTokenDto;
 import com.project.phonecaseshop.repository.MemberRepository;
+import com.project.phonecaseshop.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +24,7 @@ import java.util.*;
 public class TokenUtil {
 
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -159,5 +163,12 @@ public class TokenUtil {
 
         log.info("AccessToken, RefreshToken 데이터 전송 완료");
     }
+    public void insertRefreshToken(Long memberId, String refreshTokenValue) {
+            RefreshToken newRefreshToken = RefreshToken.builder()
+                    .memberId(memberId)
+                    .refreshToken(refreshTokenValue)
+                    .build();
+            refreshTokenRepository.save(newRefreshToken);
+        }
 
 }

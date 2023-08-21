@@ -20,7 +20,7 @@ public class CustomUserDetailService implements UserDetailsService {
         Member member = memberRepository.findByMemberEmail(username);
 
         if (member == null) {
-            throw new UsernameNotFoundException("존재하지 않는 회원입니다");
+            throw new UsernameNotFoundException("존재하지 않는 회원입니다2");
         }
 
         return User.builder()

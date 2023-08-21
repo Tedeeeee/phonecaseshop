@@ -20,9 +20,20 @@ public class MemberController {
     public void signUp(@RequestBody MemberRequestDto memberRequestDto) {
         memberService.signUp(memberRequestDto);
     }
+    // 로그아웃
+    @GetMapping("/logout")
+    public void logout() {
+        memberService.logout();
+    }
 
-    @GetMapping("/findMember")
-    public List<MemberResponseDto> findMember() {
-        return memberService.findMember();
+
+    @GetMapping("/findMembers")
+    public List<MemberResponseDto> findMembers() {
+        return memberService.findMembers();
+    }
+
+    @GetMapping("/findMember/{id}")
+    public MemberResponseDto findMember(@PathVariable Long id) {
+        return memberService.findMember(id);
     }
 }

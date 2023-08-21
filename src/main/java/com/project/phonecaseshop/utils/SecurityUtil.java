@@ -10,8 +10,9 @@ public class SecurityUtil {
 
     public static String getCurrentMemberId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.toString());
 
-        if (authentication == null || authentication.getName() == null) {
+        if (authentication.getName() == null) {
             throw new RuntimeException("로그인을 다시 확인해주세요");
         }
         return authentication.getName();
