@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -23,10 +24,11 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    public void signUp(MemberRequestDto memberRequestDto) {
+    public int signUp(MemberRequestDto memberRequestDto) {
+        int i;
         Member memberFind = memberRepository.findByMemberEmail(memberRequestDto.getMemberEmail());
         if (memberFind != null) {
-            throw new RuntimeException("이미 존재하는 회원입니다");
+            return 0;
         }
 
         memberRequestDto.setMemberStatus("T");
@@ -44,13 +46,25 @@ public class MemberService {
 
         System.out.println(member.toString());
         memberRepository.save(member);
+        return 1;
     }
 
-    public void logout() {
+    public int logout() {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
 
+        Member member = memberRepository.findByMemberEmail(currentMemberId);
+        Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByMemberId(member.getMemberId());
+
+        if (refreshTokenOptional.isPresent()) {
+            RefreshToken refreshTokenDto = refreshTokenOptional.get();
+            refreshTokenRepository.deleteById(refreshTokenDto.getRefreshTokenId());
+        }
+
+        return 1;
     }
 
+
+    // =============================================================
     public List<MemberResponseDto> findMembers() {
         List<Member> all = memberRepository.findAll();
 
@@ -87,6 +101,11 @@ public class MemberService {
                 .memberDetailAddress(member.getMemberDetailAddress())
                 .memberPoint(member.getMemberPoint())
                 .build();
+    }
+
+    public RefreshToken findRefreshToken(Long id) {
+        return refreshTokenRepository.findByMemberId(id).orElse(null);
+
     }
 
 }

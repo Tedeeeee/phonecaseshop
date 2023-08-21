@@ -2,7 +2,6 @@ package com.project.phonecaseshop.security.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.phonecaseshop.entity.RefreshToken;
-import com.project.phonecaseshop.entity.dto.refreshToken.RefreshTokenDto;
 import com.project.phonecaseshop.repository.MemberRepository;
 import com.project.phonecaseshop.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;

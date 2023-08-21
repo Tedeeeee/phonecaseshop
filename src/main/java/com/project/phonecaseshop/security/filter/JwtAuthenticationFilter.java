@@ -1,7 +1,7 @@
 package com.project.phonecaseshop.security.filter;
 
 import com.project.phonecaseshop.entity.Member;
-import com.project.phonecaseshop.entity.dto.refreshToken.RefreshTokenDto;
+import com.project.phonecaseshop.entity.RefreshToken;
 import com.project.phonecaseshop.repository.MemberRepository;
 import com.project.phonecaseshop.repository.RefreshTokenRepository;
 import com.project.phonecaseshop.security.utils.TokenUtil;
@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -39,7 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Pattern.compile("/login"),
             Pattern.compile("/members/findMember/\\d+"),
             Pattern.compile("/members/signup"),
-            Pattern.compile("/members/findMembers")
+            Pattern.compile("/members/findMembers"),
+            Pattern.compile("/members/getRefreshToken/\\d+")
     ));
 
     @Override
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public void reIssueAccessTokenAndRefreshToken(HttpServletResponse response, String refreshToken) throws IOException {
-        Optional<RefreshTokenDto> refreshTokenCheck = refreshTokenRepository.findByRefreshToken(refreshToken);
+        Optional<RefreshToken> refreshTokenCheck = refreshTokenRepository.findByRefreshToken(refreshToken);
 
         if (refreshTokenCheck.isPresent()) {
             Optional<Member> member = memberRepository.findById(refreshTokenCheck.get().getMemberId());
