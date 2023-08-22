@@ -1,4 +1,4 @@
-package com.project.phonecaseshop.entity.dto.MemberDto;
+package com.project.phonecaseshop.entity.dto.memberDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -39,7 +39,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Pattern.compile("/members/findMember/\\d+"),
             Pattern.compile("/members/signup"),
             Pattern.compile("/members/findMembers"),
-            Pattern.compile("/members/getRefreshToken/\\d+")
+            Pattern.compile("/members/getRefreshToken/\\d+"),
+
+            Pattern.compile("/etc/model"),
+            Pattern.compile("/etc/photo"),
+            Pattern.compile("/etc/design")
     ));
 
     @Override

@@ -1,11 +1,10 @@
 package com.project.phonecaseshop.controller;
 
 import com.project.phonecaseshop.entity.RefreshToken;
-import com.project.phonecaseshop.entity.dto.MemberDto.MemberRequestDto;
-import com.project.phonecaseshop.entity.dto.MemberDto.MemberResponseDto;
+import com.project.phonecaseshop.entity.dto.memberDto.MemberRequestDto;
+import com.project.phonecaseshop.entity.dto.memberDto.MemberResponseDto;
 import com.project.phonecaseshop.responseApi.ApiResponse;
 import com.project.phonecaseshop.responseApi.CommonResult;
-import com.project.phonecaseshop.responseApi.SingleResult;
 import com.project.phonecaseshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

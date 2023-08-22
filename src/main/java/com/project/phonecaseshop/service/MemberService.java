@@ -2,8 +2,8 @@ package com.project.phonecaseshop.service;
 
 import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.RefreshToken;
-import com.project.phonecaseshop.entity.dto.MemberDto.MemberRequestDto;
-import com.project.phonecaseshop.entity.dto.MemberDto.MemberResponseDto;
+import com.project.phonecaseshop.entity.dto.memberDto.MemberRequestDto;
+import com.project.phonecaseshop.entity.dto.memberDto.MemberResponseDto;
 import com.project.phonecaseshop.repository.MemberRepository;
 import com.project.phonecaseshop.repository.RefreshTokenRepository;
 import com.project.phonecaseshop.utils.SecurityUtil;
@@ -114,16 +114,10 @@ public class MemberService {
 
 
     // =============================================================
+
+    // 다수 정보
     public List<MemberResponseDto> findMembers() {
         List<Member> all = memberRepository.findAll();
-
-//        for (Member value : all) {
-//            RefreshToken refreshToken = refreshTokenRepository.findByMemberId(value.getMemberId());
-//            if (refreshToken != null) {
-//                System.out.println("refreshToken = " + refreshToken.toString());
-//            }
-//            System.out.println(value.toString());
-//        }
 
         return all.stream()
                 .map(member -> MemberResponseDto.builder()
@@ -138,6 +132,8 @@ public class MemberService {
                         .build())
                 .toList();
     }
+
+    // 한 명 정보
     public MemberResponseDto findMember(Long id) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
         System.out.println(currentMemberId);
@@ -154,6 +150,7 @@ public class MemberService {
                 .build();
     }
 
+    // 리프레쉬 토큰
     public RefreshToken findRefreshToken(Long id) {
         return refreshTokenRepository.findByMemberId(id).orElse(null);
     }
