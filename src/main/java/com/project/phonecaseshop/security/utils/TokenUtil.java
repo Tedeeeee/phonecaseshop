@@ -163,7 +163,7 @@ public class TokenUtil {
 
         log.info("AccessToken, RefreshToken 데이터 전송 완료");
     }
-    public void insertRefreshToken(Long memberId, String refreshTokenValue) {
+    public void insertRefreshToken(int memberId, String refreshTokenValue) {
             RefreshToken newRefreshToken = RefreshToken.builder()
                     .memberId(memberId)
                     .refreshToken(refreshTokenValue)

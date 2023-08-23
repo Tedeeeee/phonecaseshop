@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     // 회원정보 수정
-    @PostMapping("/updateProfile")
+    @PostMapping("")
     public CommonResult updateProfile(@RequestBody MemberRequestDto memberRequestDto) {
         System.out.println("정보 수정");
 
@@ -70,6 +70,12 @@ public class MemberController {
         }
     }
 
+    // 회원 정보 가져오기
+    @GetMapping("")
+    public MemberResponseDto findMember() {
+        return memberService.findMember();
+    }
+
 
     // ==========================================
 
@@ -78,13 +84,8 @@ public class MemberController {
         return memberService.findMembers();
     }
 
-    @GetMapping("/findMember/{id}")
-    public MemberResponseDto findMember(@PathVariable Long id) {
-        return memberService.findMember(id);
-    }
-
     @GetMapping("/getRefreshToken/{id}")
-    public RefreshToken findRefreshToken(@PathVariable Long id) {
+    public RefreshToken findRefreshToken(@PathVariable int id) {
         return memberService.findRefreshToken(id);
     }
 }

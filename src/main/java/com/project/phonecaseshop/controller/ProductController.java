@@ -9,6 +9,8 @@ import com.project.phonecaseshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class ProductController {
         return apiResponse.getListResult(productService.findProducts());
     }
 
-    @PostMapping("/createProduct")
+    @PostMapping("")
     public CommonResult createProduct(@RequestBody ProductRequestDto productRequestDto) {
         String result = productService.createProduct(productRequestDto);
 
@@ -31,6 +33,11 @@ public class ProductController {
         } else {
             return apiResponse.getFailResult("500", result);
         }
-
     }
+
+    // 전체 제품 가져오기
+//    @GetMapping("")
+//    public List<ProductResponseDto> getAllProduct() {
+//        return apiResponse.getListResult(productService.)
+//    }
 }

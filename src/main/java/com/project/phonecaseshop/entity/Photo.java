@@ -15,13 +15,13 @@ import org.hibernate.annotations.DynamicUpdate;
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long photoId;
+    private int photoId;
 
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product productId;
 
-    @Column
+    @Column(length = 30)
     private String photoName;
 
     public Photo(String photoName) {

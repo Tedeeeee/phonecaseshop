@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class MemberRequestDto {
-    private Long memberId;
+    private int memberId;
     private String memberEmail;
     private String memberPassword;
     private String memberNickname;
-    private Long memberPoint;
+    private int memberPoint;
     private String memberAddress;
     private String memberDetailAddress;
     private String memberStatus;

@@ -10,9 +10,9 @@ import java.util.*;
 @Data
 public class ProductRequestDto {
     private String productName;
-    private Long productPrice;
-    private String productDiscount;
-    private String productDeliveryPrice;
+    private int productPrice;
+    private int productDiscount;
+    private int productDeliveryPrice;
     private List<Model> productModel = new ArrayList<>();
     private List<Design> productDesign = new ArrayList<>();
     private List<Photo> productPhoto = new ArrayList<>();

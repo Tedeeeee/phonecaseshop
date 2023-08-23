@@ -16,27 +16,27 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private int memberId;
 
-    @Column
+    @Column(length = 30)
     private String memberEmail;
 
-    @Column
+    @Column(length = 100)
     private String memberPassword;
 
-    @Column
+    @Column(length = 12)
     private String memberNickname;
 
     @Column
-    private Long memberPoint;
+    private int memberPoint;
 
-    @Column
+    @Column(length = 300)
     private String memberAddress;
 
-    @Column
+    @Column(length = 30)
     private String memberDetailAddress;
 
+    // 단일 문자의 경우 별도의 설정 X
     @Column
     private String memberStatus;
-
 }

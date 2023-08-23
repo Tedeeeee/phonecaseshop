@@ -61,7 +61,7 @@ public class MemberService {
 
         if (refreshTokenOptional.isPresent()) {
             RefreshToken refreshTokenDto = refreshTokenOptional.get();
-            refreshTokenRepository.deleteById(refreshTokenDto.getRefreshTokenId());
+            refreshTokenRepository.deleteById((long) refreshTokenDto.getRefreshTokenId());
         }
 
         return 1;
@@ -77,7 +77,7 @@ public class MemberService {
             return "실패했습니다";
         } else {
             RefreshToken refreshTokenDto = refreshTokenOptional.get();
-            refreshTokenRepository.deleteById(refreshTokenDto.getRefreshTokenId());
+            refreshTokenRepository.deleteById((long) refreshTokenDto.getRefreshTokenId());
             member.setMemberStatus("F");
             memberRepository.save(member);
             return "성공했습니다";
@@ -112,6 +112,23 @@ public class MemberService {
         return "성공했습니다";
     }
 
+    // 한 명 정보
+    public MemberResponseDto findMember() {
+        String currentMemberId = SecurityUtil.getCurrentMemberId();
+        System.out.println(currentMemberId);
+        Member member = memberRepository.findByMemberEmail(currentMemberId);
+        // 추후 예외처리 필요
+        return MemberResponseDto.builder()
+                .memberId(member.getMemberId())
+                .memberEmail(member.getMemberEmail())
+                .memberPassword(member.getMemberPassword())
+                .memberNickname(member.getMemberNickname())
+                .memberAddress(member.getMemberAddress())
+                .memberDetailAddress(member.getMemberDetailAddress())
+                .memberPoint(member.getMemberPoint())
+                .memberStatus(member.getMemberStatus())
+                .build();
+    }
 
     // =============================================================
 
@@ -133,25 +150,8 @@ public class MemberService {
                 .toList();
     }
 
-    // 한 명 정보
-    public MemberResponseDto findMember(Long id) {
-        String currentMemberId = SecurityUtil.getCurrentMemberId();
-        System.out.println(currentMemberId);
-        Member member = memberRepository.findById(id).orElse(null);
-        return MemberResponseDto.builder()
-                .memberId(member.getMemberId())
-                .memberEmail(member.getMemberEmail())
-                .memberPassword(member.getMemberPassword())
-                .memberNickname(member.getMemberNickname())
-                .memberAddress(member.getMemberAddress())
-                .memberDetailAddress(member.getMemberDetailAddress())
-                .memberPoint(member.getMemberPoint())
-                .memberStatus(member.getMemberStatus())
-                .build();
-    }
-
     // 리프레쉬 토큰
-    public RefreshToken findRefreshToken(Long id) {
+    public RefreshToken findRefreshToken(int id) {
         return refreshTokenRepository.findByMemberId(id).orElse(null);
     }
 

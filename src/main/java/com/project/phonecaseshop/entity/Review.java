@@ -17,15 +17,15 @@ import java.util.*;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int reviewId;
 
-    @Column
+    @Column(length = 50)
     private String reviewName;
 
-    @Column
+    @Column(length = 1000)
     private String reviewContent;
 
-    @Column
+    @Column(length = 1000)
     private String reviewPhoto;
 
     @Column

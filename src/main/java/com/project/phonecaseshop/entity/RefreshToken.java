@@ -13,11 +13,11 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long refreshTokenId;
+    private int refreshTokenId;
 
     @Column
-    private Long memberId;
+    private int memberId;
 
-    @Column
+    @Column(length = 200)
     private String refreshToken;
 }

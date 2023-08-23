@@ -23,16 +23,19 @@ public class EtcController {
     private final PhotoRepository photoRepository;
     private final ApiResponse apiResponse;
 
+    // Model 테이블 확인
     @GetMapping("/model")
     public ListResult<Model> getModel() {
         return apiResponse.getListResult(modelRepository.findAll());
     }
 
+    // Photo 테이블 확인
     @GetMapping("/photo")
     public ListResult<Photo> getPhoto() {
         return apiResponse.getListResult(photoRepository.findAll());
     }
 
+    // Design 테이블 확인
     @GetMapping("/design")
     public ListResult<Design> getDesign() {
         return apiResponse.getListResult(designRepository.findAll());

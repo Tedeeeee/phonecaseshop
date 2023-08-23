@@ -18,21 +18,21 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private int productId;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
     private Member member;
 
     @Column
-    private Long productPrice;
+    private int productPrice;
 
-    @Column
+    @Column(length = 30)
     private String productName;
 
     @Column
-    private String productDiscount;
+    private int productDiscount;
 
     @Column
-    private String productDeliveryPrice;
+    private int productDeliveryPrice;
 }

@@ -58,14 +58,13 @@ public class ProductService {
         return "제품이 생성되었습니다";
     }
 
-    //======================================================
     public List<ProductResponseDto> findProducts() {
         List<Product> all = productRepository.findAll();
 
 
         return all.stream()
                 .map(product ->{
-                    Long productId = product.getProductId();
+                    int productId = product.getProductId();
                     List<Design> productDesigns = designRepository.findByProductId_ProductId(productId);
                     List<Model> productModels = modelRepository.findByProductId_ProductId(productId);
                     List<Photo> productPhotos = photoRepository.findByProductId_ProductId(productId);

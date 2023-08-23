@@ -6,18 +6,17 @@ import com.project.phonecaseshop.entity.Photo;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Builder
 public class ProductResponseDto {
-    private Long productId;
+    private int productId;
     private String memberEmail;
     private String productName;
-    private Long productPrice;
-    private String productDiscount;
-    private String productDeliveryPrice;
+    private int productPrice;
+    private int productDiscount;
+    private int productDeliveryPrice;
     private List<Model> productModel;
     private List<Design> productDesign;
     private List<Photo> productPhoto;
