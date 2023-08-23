@@ -1,5 +1,6 @@
 package com.project.phonecaseshop.entity;
 
+import com.project.phonecaseshop.entity.dto.memberDto.MemberRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -8,7 +9,6 @@ import java.util.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -35,4 +35,5 @@ public class Product {
 
     @Column
     private int productDeliveryPrice;
+
 }

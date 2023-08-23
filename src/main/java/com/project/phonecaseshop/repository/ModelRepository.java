@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
     List<Model> findByProductId_ProductId(int productId);
+    void deleteByProductId_ProductId(int productId);
 
 }

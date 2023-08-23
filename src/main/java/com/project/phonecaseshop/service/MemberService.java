@@ -48,7 +48,6 @@ public class MemberService {
                 .memberStatus(memberRequestDto.getMemberStatus())
                 .build();
 
-        System.out.println(member.toString());
         memberRepository.save(member);
         return "성공하였습니다";
     }
@@ -104,9 +103,7 @@ public class MemberService {
             return "닉네임 중복을 확인 해주세요";
         }
 
-        existingMember.setMemberNickname(memberRequestDto.getMemberNickname());
-        existingMember.setMemberAddress(memberRequestDto.getMemberAddress());
-        existingMember.setMemberDetailAddress(memberRequestDto.getMemberDetailAddress());
+        existingMember.updateProfile(memberRequestDto);
         memberRepository.save(existingMember);
 
         return "성공했습니다";

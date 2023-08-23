@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     // 회원정보 수정
-    @PostMapping("")
+    @PutMapping("")
     public CommonResult updateProfile(@RequestBody MemberRequestDto memberRequestDto) {
         System.out.println("정보 수정");
 

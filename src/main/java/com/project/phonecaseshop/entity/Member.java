@@ -1,5 +1,6 @@
 package com.project.phonecaseshop.entity;
 
+import com.project.phonecaseshop.entity.dto.memberDto.MemberRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -39,4 +40,10 @@ public class Member {
     // 단일 문자의 경우 별도의 설정 X
     @Column
     private String memberStatus;
+
+    public void updateProfile(MemberRequestDto memberRequestDto) {
+        this.memberNickname = memberRequestDto.getMemberNickname();
+        this.memberAddress = memberRequestDto.getMemberAddress();
+        this.memberDetailAddress = memberRequestDto.getMemberDetailAddress();
+    }
 }
