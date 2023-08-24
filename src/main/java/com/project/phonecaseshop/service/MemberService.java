@@ -60,7 +60,7 @@ public class MemberService {
 
         if (refreshTokenOptional.isPresent()) {
             RefreshToken refreshTokenDto = refreshTokenOptional.get();
-            refreshTokenRepository.deleteById((long) refreshTokenDto.getRefreshTokenId());
+            refreshTokenRepository.deleteById(refreshTokenDto.getRefreshTokenId());
         }
 
         return 1;
@@ -76,7 +76,7 @@ public class MemberService {
             return "실패했습니다";
         } else {
             RefreshToken refreshTokenDto = refreshTokenOptional.get();
-            refreshTokenRepository.deleteById((long) refreshTokenDto.getRefreshTokenId());
+            refreshTokenRepository.deleteById(refreshTokenDto.getRefreshTokenId());
             member.setMemberStatus("F");
             memberRepository.save(member);
             return "성공했습니다";
