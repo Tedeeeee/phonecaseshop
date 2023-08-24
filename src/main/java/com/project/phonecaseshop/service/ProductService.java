@@ -24,10 +24,8 @@ public class ProductService {
 
     public String createProduct(ProductRequestDto productRequestDto) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
-        System.out.println("currentMemberId = " + currentMemberId);
 
         Member member = memberRepository.findByMemberEmail(currentMemberId);
-        System.out.println("member = " + member.toString());
 
         Product product = Product.builder()
                 .productName(productRequestDto.getProductName())
@@ -136,5 +134,7 @@ public class ProductService {
                 .productPhoto(productPhotos)
                 .build();
     }
+
+    //=========================================================
 
 }
