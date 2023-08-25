@@ -4,6 +4,7 @@ import com.project.phonecaseshop.entity.dto.reviewDto.ReviewRequestDto;
 import com.project.phonecaseshop.entity.dto.reviewDto.ReviewResponseDto;
 import com.project.phonecaseshop.responseApi.ApiResponse;
 import com.project.phonecaseshop.responseApi.CommonResult;
+import com.project.phonecaseshop.responseApi.ListResult;
 import com.project.phonecaseshop.responseApi.SingleResult;
 import com.project.phonecaseshop.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,16 @@ public class ReviewController {
         return apiResponse.getFailResult("500", result);
     }
 
-    // 리뷰 한개 가져오기
+    // 리뷰 한개 가져오기 ( 수정할때 사용할 예정 )
     @GetMapping("{memberId}/{productId}/{reviewId}")
     public SingleResult<ReviewResponseDto> getReview(@PathVariable int memberId, @PathVariable int productId,
                                                      @PathVariable int reviewId) {
         return apiResponse.getSingleResult(reviewService.getReview(memberId, productId, reviewId));
+    }
+
+    // 리뷰 전체 가져오기
+    @GetMapping("{productId}")
+    public ListResult<ReviewResponseDto> getAllReview(@PathVariable int productId) {
+        return apiResponse.getListResult(reviewService.getAllReview(productId));
     }
 }
