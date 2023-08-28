@@ -1,6 +1,7 @@
 package com.project.phonecaseshop.responseApi;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,13 @@ public class ApiResponse {
     public <T> ListResult<T> getListResult(List<T> list) {
         ListResult<T> result = new ListResult<>();
         result.setData(list);
+        setSuccessResult(result);
+        return result;
+    }
+
+    public <T> PageResult<T> getPageResult(Page<T> page) {
+        PageResult<T> result = new PageResult<>();
+        result.setData(page);
         setSuccessResult(result);
         return result;
     }
