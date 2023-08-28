@@ -84,7 +84,7 @@ public class ProductService {
     }
 
     public ProductResponseDto findProduct(int id) {
-        Optional<Product> product = productRepository.findById((long) id);
+        Optional<Product> product = productRepository.findById(id);
 
         Product findProduct = product.orElse(null);
 
@@ -97,7 +97,7 @@ public class ProductService {
 
     @Transactional
     public String removeProduct(int id) {
-        Optional<Product> productOptional = productRepository.findById((long) id);
+        Optional<Product> productOptional = productRepository.findById(id);
 
         String currentMemberId = SecurityUtil.getCurrentMemberId();
 

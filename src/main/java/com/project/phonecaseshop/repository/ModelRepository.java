@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ModelRepository extends JpaRepository<Model, Long> {
+public interface ModelRepository extends JpaRepository<Model, Integer> {
     List<Model> findByProductId_ProductId(int productId);
     void deleteByProductId_ProductId(int productId);
 

@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Pattern.compile("/members/signup"),
             Pattern.compile("/products"),
             Pattern.compile("/products/\\d+"),
+            Pattern.compile("/reviews/list/\\d+"),
 
             Pattern.compile("/members/findMembers"),
             Pattern.compile("/members/getRefreshToken/\\d+"),
@@ -71,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Optional<RefreshToken> refreshTokenCheck = refreshTokenRepository.findByRefreshToken(refreshToken);
 
         if (refreshTokenCheck.isPresent()) {
-            Optional<Member> member = memberRepository.findById((long) refreshTokenCheck.get().getMemberId());
+            Optional<Member> member = memberRepository.findById(refreshTokenCheck.get().getMemberId());
             if (member.isPresent()) {
                 String reIssuedRefreshToken = reIssuedRefreshToken(refreshTokenCheck.get().getMemberId());
                 String reIssuedAccessToken = tokenUtil.createAccessToken(member.get().getMemberEmail());

@@ -46,8 +46,8 @@ public class TestController {
     }
 
     // AWS S3 사진 업로드 확인
-    @PostMapping("/upload")
-    public SingleResult<Photo> uploadFile() {
-        return apiResponse.getSingleResult(productService)
-    }
+//    @PostMapping("/upload")
+//    public SingleResult<Photo> uploadFile() {
+//        return apiResponse.getSingleResult(productService)
+//    }
 }
