@@ -45,7 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Pattern.compile("/members/getRefreshToken/\\d+"),
             Pattern.compile("/etc/model"),
             Pattern.compile("/etc/photo"),
-            Pattern.compile("/etc/design")
+            Pattern.compile("/etc/design"),
+            Pattern.compile("/orders/all")
     ));
 
     @Override

@@ -42,7 +42,7 @@ public class ReviewController {
     // 리뷰 전체 가져오기
     @GetMapping("/list/{productId}")
     public PageResult<ReviewResponseDto> getAllReview(@PathVariable int productId, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return apiResponse.getPageResult(reviewService.getAllReview(productId, pageable.getPageNumber(), pageable.getPageSize()));
+        return apiResponse.getPageResult(reviewService.getAllReview(productId, pageable));
     }
 
     // 리뷰 수정하기
