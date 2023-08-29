@@ -5,6 +5,7 @@ import com.project.phonecaseshop.entity.dto.reviewDto.ReviewResponseDto;
 import com.project.phonecaseshop.responseApi.*;
 import com.project.phonecaseshop.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;

@@ -7,6 +7,9 @@ import com.project.phonecaseshop.repository.*;
 import com.project.phonecaseshop.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -65,12 +68,10 @@ public class ProductService {
         return "제품이 생성되었습니다";
     }
 
-    public List<ProductResponseDto> findProducts() {
-        List<Product> all = productRepository.findAll();
+    public Slice<ProductResponseDto> findProducts(Pageable pageable) {
+        Slice<Product> all = productRepository.findAll(pageable);
 
-        return all.stream()
-                .map(this::convertToResponseDto)
-                .toList();
+        return all.map(this::convertToResponseDto);
     }
 
     public List<ProductResponseDto> getMyProducts() {

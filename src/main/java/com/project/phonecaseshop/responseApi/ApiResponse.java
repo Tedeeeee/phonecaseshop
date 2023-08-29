@@ -2,6 +2,7 @@ package com.project.phonecaseshop.responseApi;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,13 @@ public class ApiResponse {
     public <T> PageResult<T> getPageResult(Page<T> page) {
         PageResult<T> result = new PageResult<>();
         result.setData(page);
+        setSuccessResult(result);
+        return result;
+    }
+
+    public <T> SliceResult<T> getSliceResult(Slice<T> slice) {
+        SliceResult<T> result = new SliceResult<>();
+        result.setData(slice);
         setSuccessResult(result);
         return result;
     }

@@ -2,12 +2,10 @@ package com.project.phonecaseshop.controller;
 
 import com.project.phonecaseshop.entity.dto.productDto.ProductRequestDto;
 import com.project.phonecaseshop.entity.dto.productDto.ProductResponseDto;
-import com.project.phonecaseshop.responseApi.ApiResponse;
-import com.project.phonecaseshop.responseApi.CommonResult;
-import com.project.phonecaseshop.responseApi.ListResult;
-import com.project.phonecaseshop.responseApi.SingleResult;
+import com.project.phonecaseshop.responseApi.*;
 import com.project.phonecaseshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,9 +18,8 @@ public class ProductController {
 
     // 전체 상품 가져오기
     @GetMapping("")
-    public ListResult<ProductResponseDto> getProductList() {
-        System.out.println("durl");
-        return apiResponse.getListResult(productService.findProducts());
+    public SliceResult<ProductResponseDto> getProductList(Pageable pageable) {
+        return apiResponse.getSliceResult(productService.findProducts(pageable));
     }
 
     // 하나의 상품 가져오기
