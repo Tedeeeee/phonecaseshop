@@ -21,6 +21,7 @@ public class ProductController {
     // 전체 상품 가져오기
     @GetMapping("")
     public ListResult<ProductResponseDto> getProductList() {
+        System.out.println("durl");
         return apiResponse.getListResult(productService.findProducts());
     }
 
@@ -49,11 +50,17 @@ public class ProductController {
         }
     }
 
-    // 상품 수정하기
-//    @PutMapping("/{id}/change")
-//    public SingleResult<ProductResponseDto> updateProduct(@PathVariable int id, @RequestBody ProductRequestDto productRequestDto) {
-//        return apiResponse.getSingleResult(productService.)
-//    }
+     // 상품 수정하기
+    @PutMapping("/{productId}")
+    public CommonResult updateProduct(@PathVariable int productId, @RequestBody ProductRequestDto productRequestDto) {
+        String result = productService.updateProduct(productId, productRequestDto);
+
+        if (result.equals("수정을 성공했습니다")) {
+            return apiResponse.getSuccessResult(1);
+        } else {
+            return apiResponse.getFailResult("500", result);
+        }
+    }
 
     @DeleteMapping("/removal/{id}")
     public CommonResult deleteProduct(@PathVariable int id) {

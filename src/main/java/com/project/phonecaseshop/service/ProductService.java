@@ -115,6 +115,24 @@ public class ProductService {
         return "실패했습니다";
     }
 
+    public String updateProduct(int productId, ProductRequestDto productRequestDto) {
+        Optional<Product> productDto = productRepository.findById(productId);
+
+        if (productDto.isPresent()) {
+            Product product = Product.builder()
+                    .productId(productId)
+                    .productName(productRequestDto.getProductName())
+                    .productPrice(productRequestDto.getProductPrice())
+                    .productDiscount(productRequestDto.getProductDiscount())
+                    .productDeliveryPrice(productRequestDto.getProductDeliveryPrice())
+                    .member(productDto.get().getMember())
+                    .build();
+
+            productRepository.save(product);
+            return "수정을 성공했습니다";
+        }
+        return "실패했습니다.";
+    }
 
     private ProductResponseDto convertToResponseDto(Product product) {
         int productId = product.getProductId();
@@ -134,7 +152,4 @@ public class ProductService {
                 .productPhoto(productPhotos)
                 .build();
     }
-
-    //=========================================================
-
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -41,7 +42,8 @@ public class ReviewController {
 
     // 리뷰 전체 가져오기
     @GetMapping("/list/{productId}")
-    public PageResult<ReviewResponseDto> getAllReview(@PathVariable int productId, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public PageResult<ReviewResponseDto> getAllReview(@PathVariable int productId,
+                                                      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return apiResponse.getPageResult(reviewService.getAllReview(productId, pageable));
     }
 

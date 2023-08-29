@@ -37,12 +37,6 @@ public class ApiResponse {
         return result;
     }
 
-    public CommonResult getFailResult() {
-        CommonResult result = new CommonResult();
-        setFailResult(result);
-        return result;
-    }
-
     public CommonResult getFailResult(String code, String cause) {
         CommonResult result = new CommonResult();
         result.setSuccess(false);

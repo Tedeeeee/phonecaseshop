@@ -1,11 +1,8 @@
 package com.project.phonecaseshop.entity;
 
-import com.project.phonecaseshop.entity.dto.memberDto.MemberRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.util.*;
 
 @Entity
 @Getter
