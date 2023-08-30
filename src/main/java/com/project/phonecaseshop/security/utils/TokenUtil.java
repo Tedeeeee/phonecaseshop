@@ -36,7 +36,6 @@ public class TokenUtil {
 
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-
     private static final String BEARER = "Bearer ";
 
     public String createAccessToken(String memberEmail) {

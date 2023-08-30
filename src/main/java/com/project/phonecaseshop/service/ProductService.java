@@ -69,9 +69,8 @@ public class ProductService {
     }
 
     public Slice<ProductResponseDto> findProducts(Pageable pageable) {
-        Slice<Product> all = productRepository.findAll(pageable);
-
-        return all.map(this::convertToResponseDto);
+        Slice<Product> sliceBy = productRepository.findSliceBy(pageable);
+        return sliceBy.map(this::convertToResponseDto);
     }
 
     public List<ProductResponseDto> getMyProducts() {

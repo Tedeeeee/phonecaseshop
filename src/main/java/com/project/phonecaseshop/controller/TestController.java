@@ -1,6 +1,7 @@
 package com.project.phonecaseshop.controller;
 
 import com.project.phonecaseshop.entity.Design;
+import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.Model;
 import com.project.phonecaseshop.entity.Photo;
 import com.project.phonecaseshop.repository.DesignRepository;
@@ -9,8 +10,10 @@ import com.project.phonecaseshop.repository.PhotoRepository;
 import com.project.phonecaseshop.responseApi.ApiResponse;
 import com.project.phonecaseshop.responseApi.ListResult;
 import com.project.phonecaseshop.responseApi.SingleResult;
+import com.project.phonecaseshop.responseApi.SliceResult;
 import com.project.phonecaseshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,4 +53,5 @@ public class TestController {
 //    public SingleResult<Photo> uploadFile() {
 //        return apiResponse.getSingleResult(productService)
 //    }
+
 }
