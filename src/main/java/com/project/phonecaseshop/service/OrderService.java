@@ -1,5 +1,7 @@
 package com.project.phonecaseshop.service;
 
+import com.project.phonecaseshop.config.exception.BusinessExceptionHandler;
+import com.project.phonecaseshop.config.exception.ErrorCode;
 import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.Orders;
 import com.project.phonecaseshop.entity.Product;
@@ -26,7 +28,7 @@ public class OrderService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public String createOrder(OrderRequestDto orderRequestDto) {
+    public int createOrder(OrderRequestDto orderRequestDto) {
 
         String currentMemberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findByMemberEmail(currentMemberId);
@@ -42,10 +44,9 @@ public class OrderService {
                     .build();
 
             orderRepository.save(orders);
-            return "주문에 성공하였습니다";
+            return 1;
         }
-        // 예외처리
-        return "주문이 실패되었습니다";
+        throw new BusinessExceptionHandler("주문에 실패하였습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
     public List<OrderResponseDto> getAllOrder() {

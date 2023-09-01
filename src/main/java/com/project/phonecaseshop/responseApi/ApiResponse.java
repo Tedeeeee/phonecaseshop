@@ -45,10 +45,10 @@ public class ApiResponse {
         return result;
     }
 
-    public CommonResult getFailResult(String code, String cause) {
+    public CommonResult getFailResult(int status, String cause) {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
-        result.setCode(code);
+        result.setStatus(status);
         result.setMsg(cause);
 
         return result;
@@ -56,13 +56,13 @@ public class ApiResponse {
 
     private void setSuccessResult(CommonResult result) {
         result.setSuccess(true);
-        result.setCode(CommonResponse.SUCCESS.getCode());
+        result.setStatus(CommonResponse.SUCCESS.getCode());
         result.setMsg(CommonResponse.SUCCESS.getMsg());
     }
 
     private void setFailResult(CommonResult result) {
         result.setSuccess(false);
-        result.setCode(CommonResponse.FAIL.getCode());
+        result.setStatus(CommonResponse.FAIL.getCode());
         result.setMsg(CommonResponse.FAIL.getMsg());
     }
 }

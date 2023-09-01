@@ -1,5 +1,7 @@
 package com.project.phonecaseshop.service;
 
+import com.project.phonecaseshop.config.exception.BusinessExceptionHandler;
+import com.project.phonecaseshop.config.exception.ErrorCode;
 import com.project.phonecaseshop.entity.*;
 import com.project.phonecaseshop.entity.dto.productDto.ProductRequestDto;
 import com.project.phonecaseshop.entity.dto.productDto.ProductResponseDto;
@@ -25,7 +27,7 @@ public class ProductService {
     private final DesignRepository designRepository;
     private final PhotoRepository photoRepository;
 
-    public String createProduct(ProductRequestDto productRequestDto) {
+    public int createProduct(ProductRequestDto productRequestDto) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
 
         Member member = memberRepository.findByMemberEmail(currentMemberId);
@@ -38,7 +40,6 @@ public class ProductService {
                 .productPrice(productRequestDto.getProductPrice())
                 .build();
 
-        System.out.println("product = " + product.toString());
         productRepository.save(product);
 
         for (Model modelEn : productRequestDto.getProductModel()) {
@@ -65,7 +66,7 @@ public class ProductService {
             photoRepository.save(photo);
         }
 
-        return "제품이 생성되었습니다";
+        return 1;
     }
 
     public Slice<ProductResponseDto> findProducts(Pageable pageable) {
@@ -91,12 +92,12 @@ public class ProductService {
         if (findProduct != null) {
             return convertToResponseDto(findProduct);
         } else {
-            return null;
+            throw new BusinessExceptionHandler("존재하지 않는 상품입니다", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
     }
 
     @Transactional
-    public String removeProduct(int id) {
+    public int removeProduct(int id) {
         Optional<Product> productOptional = productRepository.findById(id);
 
         String currentMemberId = SecurityUtil.getCurrentMemberId();
@@ -108,14 +109,13 @@ public class ProductService {
                 designRepository.deleteByProductId_ProductId(product.getProductId());
                 photoRepository.deleteByProductId_ProductId(product.getProductId());
                 productRepository.delete(product);
-                return "제품이 제거되었습니다";
+                return 1;
             }
         }
-        // 예외 처리 생성 예정
-        return "실패했습니다";
+        throw new BusinessExceptionHandler("상품 제거를 실패하였습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
-    public String updateProduct(int productId, ProductRequestDto productRequestDto) {
+    public int updateProduct(int productId, ProductRequestDto productRequestDto) {
         Optional<Product> productDto = productRepository.findById(productId);
 
         if (productDto.isPresent()) {
@@ -129,9 +129,9 @@ public class ProductService {
                     .build();
 
             productRepository.save(product);
-            return "수정을 성공했습니다";
+            return 1;
         }
-        return "실패했습니다.";
+        throw new BusinessExceptionHandler("상품 수정에 실패했습니다", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
     private ProductResponseDto convertToResponseDto(Product product) {

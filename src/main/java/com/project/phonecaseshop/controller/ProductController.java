@@ -38,36 +38,17 @@ public class ProductController {
     // 상품 생성
     @PostMapping("/new")
     public CommonResult createProduct(@RequestBody ProductRequestDto productRequestDto) {
-        String result = productService.createProduct(productRequestDto);
-
-        if (result.equals("제품이 생성되었습니다")) {
-            return apiResponse.getSuccessResult(1);
-        } else {
-            return apiResponse.getFailResult("500", result);
-        }
+        return apiResponse.getSuccessResult(productService.createProduct(productRequestDto));
     }
 
      // 상품 수정하기
     @PutMapping("/{productId}")
     public CommonResult updateProduct(@PathVariable int productId, @RequestBody ProductRequestDto productRequestDto) {
-        String result = productService.updateProduct(productId, productRequestDto);
-
-        if (result.equals("수정을 성공했습니다")) {
-            return apiResponse.getSuccessResult(1);
-        } else {
-            return apiResponse.getFailResult("500", result);
-        }
+        return apiResponse.getSuccessResult(productService.updateProduct(productId, productRequestDto));
     }
 
     @DeleteMapping("/removal/{id}")
     public CommonResult deleteProduct(@PathVariable int id) {
-
-        String result = productService.removeProduct(id);
-
-        if (result.equals("제품이 제거되었습니다")) {
-            return apiResponse.getSuccessResult(1);
-        } else {
-            return apiResponse.getFailResult("500", result);
-        }
+        return apiResponse.getSuccessResult(productService.removeProduct(id));
     }
 }

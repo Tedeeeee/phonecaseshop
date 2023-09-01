@@ -21,13 +21,7 @@ public class OrderController {
 
     @PostMapping("")
     public CommonResult createOrder(@RequestBody OrderRequestDto orderRequestDto) {
-
-        String result = orderService.createOrder(orderRequestDto);
-
-        if (result.equals("주문에 성공하였습니다")) {
-            return apiResponse.getSuccessResult(1);
-        }
-        return apiResponse.getFailResult("500", result);
+        return apiResponse.getSuccessResult(orderService.createOrder(orderRequestDto));
     }
 
     @GetMapping("/all")

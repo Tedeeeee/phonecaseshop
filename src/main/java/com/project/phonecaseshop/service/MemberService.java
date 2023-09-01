@@ -1,5 +1,7 @@
 package com.project.phonecaseshop.service;
 
+import com.project.phonecaseshop.config.exception.BusinessExceptionHandler;
+import com.project.phonecaseshop.config.exception.ErrorCode;
 import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.RefreshToken;
 import com.project.phonecaseshop.entity.dto.memberDto.MemberRequestDto;
@@ -24,15 +26,15 @@ public class MemberService {
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    public String signUp(MemberRequestDto memberRequestDto) {
+    public int signUp(MemberRequestDto memberRequestDto) {
         Member existMemberEmail = memberRepository.findByMemberEmail(memberRequestDto.getMemberEmail());
         Member existMemberNickname = memberRepository.findByMemberNickname(memberRequestDto.getMemberNickname());
 
         if (existMemberEmail != null) {
-            return "이메일 중복을 확인 해주세요";
+            throw new BusinessExceptionHandler("이메일 중복을 확인해주세요", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
         if (existMemberNickname != null) {
-            return "닉네임 중복을 확인 해주세요";
+            throw new BusinessExceptionHandler("닉네임 중복을 확인해주세요", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
 
         memberRequestDto.setMemberStatus("T");
@@ -49,7 +51,7 @@ public class MemberService {
                 .build();
 
         memberRepository.save(member);
-        return "성공하였습니다";
+        return 1;
     }
 
     public int logout() {
@@ -66,90 +68,67 @@ public class MemberService {
         return 1;
     }
 
-    public String withdrawal() {
+    public int withdrawal() {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
 
         Member member = memberRepository.findByMemberEmail(currentMemberId);
         Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByMemberId(member.getMemberId());
 
         if (refreshTokenOptional.isEmpty()) {
-            return "실패했습니다";
+            throw new BusinessExceptionHandler("로그인 정보가 존재하지 않습니다", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         } else {
             RefreshToken refreshTokenDto = refreshTokenOptional.get();
             refreshTokenRepository.deleteById(refreshTokenDto.getRefreshTokenId());
             member.setMemberStatus("F");
             memberRepository.save(member);
-            return "성공했습니다";
+            return 1;
         }
     }
 
-    public String updateProfile(MemberRequestDto memberRequestDto) {
+    public int updateProfile(MemberRequestDto memberRequestDto) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
 
         Member existingMember = memberRepository.findByMemberEmail(currentMemberId);
 
         if (existingMember == null) {
-            return "기존 회원 정보를 찾을 수 없습니다";
+            throw new BusinessExceptionHandler("기존 회원 정보를 찾을 수 없습니다", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
 
         Member existMemberEmail = memberRepository.findByMemberEmail(memberRequestDto.getMemberEmail());
         Member existMemberNickname = memberRepository.findByMemberNickname(memberRequestDto.getMemberNickname());
 
         if (existMemberEmail != null) {
-            return "이메일 중복을 확인 해주세요";
+            throw new BusinessExceptionHandler("이메일 중복을 확인해주세요", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
 
         if (existMemberNickname != null) {
-            return "닉네임 중복을 확인 해주세요";
+            throw new BusinessExceptionHandler("닉네임 중복을 확인해주세요", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
 
         existingMember.updateProfile(memberRequestDto);
         memberRepository.save(existingMember);
 
-        return "성공했습니다";
+        return 1;
     }
 
     // 한 명 정보
     public MemberResponseDto findMember() {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
-        System.out.println(currentMemberId);
         Member member = memberRepository.findByMemberEmail(currentMemberId);
-        // 추후 예외처리 필요
-        return MemberResponseDto.builder()
-                .memberId(member.getMemberId())
-                .memberEmail(member.getMemberEmail())
-                .memberPassword(member.getMemberPassword())
-                .memberNickname(member.getMemberNickname())
-                .memberAddress(member.getMemberAddress())
-                .memberDetailAddress(member.getMemberDetailAddress())
-                .memberPoint(member.getMemberPoint())
-                .memberStatus(member.getMemberStatus())
-                .build();
+
+        if (member != null) {
+            return MemberResponseDto.builder()
+                    .memberId(member.getMemberId())
+                    .memberEmail(member.getMemberEmail())
+                    .memberPassword(member.getMemberPassword())
+                    .memberNickname(member.getMemberNickname())
+                    .memberAddress(member.getMemberAddress())
+                    .memberDetailAddress(member.getMemberDetailAddress())
+                    .memberPoint(member.getMemberPoint())
+                    .memberStatus(member.getMemberStatus())
+                    .build();
+        } else {
+            throw new BusinessExceptionHandler("회원 정보가 존재하지 않습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+        }
     }
-
-    // =============================================================
-
-    // 다수 정보
-    public List<MemberResponseDto> findMembers() {
-        List<Member> all = memberRepository.findAll();
-
-        return all.stream()
-                .map(member -> MemberResponseDto.builder()
-                        .memberId(member.getMemberId())
-                        .memberEmail(member.getMemberEmail())
-                        .memberPassword(member.getMemberPassword())
-                        .memberNickname(member.getMemberNickname())
-                        .memberPoint(member.getMemberPoint())
-                        .memberAddress(member.getMemberAddress())
-                        .memberDetailAddress(member.getMemberDetailAddress())
-                        .memberStatus(member.getMemberStatus())
-                        .build())
-                .toList();
-    }
-
-    // 리프레쉬 토큰
-    public RefreshToken findRefreshToken(int id) {
-        return refreshTokenRepository.findByMemberId(id).orElse(null);
-    }
-
 }

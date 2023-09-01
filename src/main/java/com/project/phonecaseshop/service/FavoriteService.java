@@ -1,5 +1,7 @@
 package com.project.phonecaseshop.service;
 
+import com.project.phonecaseshop.config.exception.BusinessExceptionHandler;
+import com.project.phonecaseshop.config.exception.ErrorCode;
 import com.project.phonecaseshop.entity.Favorite;
 import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.Product;
@@ -36,8 +38,7 @@ public class FavoriteService {
             boolean alreadyLiked = findMemberId.stream()
                     .anyMatch(favorite -> favorite.getProductId().getProductId() == productId);
             if (alreadyLiked) {
-                // 이미 저장되어 있는 상품에 대한 예외 처리
-                return 0;
+                throw new BusinessExceptionHandler("이미 찜한 상품입니다", ErrorCode.BUSINESS_EXCEPTION_ERROR);
             }
             Favorite favorite = Favorite.builder()
                     .memberId(member)
@@ -46,9 +47,7 @@ public class FavoriteService {
             favoriteRepository.save(favorite);
             return 1;
         }
-
-        // 예외처리 ( 실패함 )
-        return 0;
+        throw new BusinessExceptionHandler("찜을 실패하였습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
     @Transactional
@@ -58,13 +57,11 @@ public class FavoriteService {
         Optional<Product> product = productRepository.findById(productId);
 
         if (member != null && product.isPresent()) {
-            System.out.println("여기로 들어오는가?");
             favoriteRepository.deleteByProductId_ProductId(productId);
             return 1;
         }
 
-        // 예외처리
-        return 0;
+        throw new BusinessExceptionHandler("찜 취소가 실패하였습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
     // 가져오는 로직
@@ -81,7 +78,8 @@ public class FavoriteService {
                             .productId(favorite.getProductId().getProductId())
                             .build()
                     ).collect(Collectors.toList());
+        } else {
+            throw new BusinessExceptionHandler("로그인 정보가 존재하지 않습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
         }
-        return Collections.emptyList();
     }
 }
