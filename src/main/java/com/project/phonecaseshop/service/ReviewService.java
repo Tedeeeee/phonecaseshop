@@ -1,5 +1,7 @@
 package com.project.phonecaseshop.service;
 
+import com.project.phonecaseshop.config.exception.BusinessExceptionHandler;
+import com.project.phonecaseshop.config.exception.ErrorCode;
 import com.project.phonecaseshop.entity.*;
 import com.project.phonecaseshop.entity.dto.reviewDto.ReviewRequestDto;
 import com.project.phonecaseshop.entity.dto.reviewDto.ReviewResponseDto;
@@ -24,9 +26,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
     private final ReviewRepository reviewRepository;
 
-    public String createReview(ReviewRequestDto reviewRequestDto, int productId) throws ParseException {
-        // 그리고 추가적으로 상품을 구매한 사람인지 확인과정도 거쳐야 한다.
-        // 현재 문제 상황 사용자가 아니더라도 id 를 입력하면 아무나 다 입력가능 그러면 토큰에 있는 email 과 해당 이메일로 찾은 사용자의 email과 같아야한다.
+    public int createReview(ReviewRequestDto reviewRequestDto, int productId) throws ParseException {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
         Member findMember = memberRepository.findByMemberEmail(currentMemberId);
 
@@ -42,9 +42,9 @@ public class ReviewService {
                     .build();
 
             reviewRepository.save(review);
-            return "리뷰가 등록되었습니다";
+            return 1;
         }
-        return "실패하였습니다";
+        throw new BusinessExceptionHandler("상품생성을 실패했습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
     public Page<ReviewResponseDto> getAllReview(int productId, Pageable pageable) {
@@ -67,11 +67,10 @@ public class ReviewService {
                 });
             }
         }
-        // 예외처리
-        return null;
+        throw new BusinessExceptionHandler("상품이 존재하지 않습니다.", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
-    public String updateReview(int reviewId, ReviewRequestDto reviewRequestDto) {
+    public int updateReview(int reviewId, ReviewRequestDto reviewRequestDto) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findByMemberEmail(currentMemberId);
 
@@ -88,12 +87,12 @@ public class ReviewService {
                     .build();
 
             reviewRepository.save(review);
-            return "리뷰가 수정되었습니다";
+            return 1;
         }
-        return "리뷰 수정에 실패하였습니다";
+        throw new BusinessExceptionHandler("리뷰 수정에 실패하였습니다", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 
-    public String deleteReview(int reviewId) {
+    public int deleteReview(int reviewId) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findByMemberEmail(currentMemberId);
 
@@ -102,31 +101,8 @@ public class ReviewService {
 
         if (member != null && review.isPresent()) {
             reviewRepository.deleteById(reviewId);
-            return "리뷰가 삭제되었습니다";
+            return 1;
         }
-        return "리뷰 삭제에 실패하였습니다";
-    }
-
-    // ===================================================
-    public ReviewResponseDto getReview(int reviewId) {
-        // 해당 리뷰가 수정하려는 회원과 같은 사람인지 확인해야함
-        String currentMemberId = SecurityUtil.getCurrentMemberId();
-        Member findMember = memberRepository.findByMemberEmail(currentMemberId);
-
-        if (findMember != null) {
-            Optional<Review> review = reviewRepository.findById(reviewId);
-            if (review.isPresent()) {
-                return ReviewResponseDto.builder()
-                        .reviewId(reviewId)
-                        .reviewName(review.get().getReviewName())
-                        .reviewContent(review.get().getReviewContent())
-                        .reviewDate(review.get().getReviewDate())
-                        .memberId(findMember)
-                        .productId(review.get().getProductId())
-                        .build();
-            }
-        }
-        // 예외 처리
-        return null;
+        throw new BusinessExceptionHandler("리뷰 삭제에 실패하였습니다", ErrorCode.BUSINESS_EXCEPTION_ERROR);
     }
 }

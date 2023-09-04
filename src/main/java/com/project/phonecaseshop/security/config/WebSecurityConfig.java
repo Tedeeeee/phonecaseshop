@@ -44,13 +44,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .anyRequest().permitAll())
 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .addFilterAfter(customAuthenticationFilter(), LogoutFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), CustomAuthenticationFilter.class)
         ;
-
         return http.build();
     }
 
@@ -66,7 +65,7 @@ public class WebSecurityConfig {
 
     @Bean
     public CustomAuthenticationProvider customAuthenticationProvider() {
-        return new CustomAuthenticationProvider(customUserDetailService, bCryptPasswordEncoder());
+        return new CustomAuthenticationProvider(customUserDetailService, bCryptPasswordEncoder(), refreshTokenRepository, memberRepository);
     }
 
     @Bean

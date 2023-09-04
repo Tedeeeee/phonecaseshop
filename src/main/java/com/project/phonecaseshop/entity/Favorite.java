@@ -1,31 +1,20 @@
 package com.project.phonecaseshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-@DynamicUpdate
+@AllArgsConstructor
 @Builder
-public class Order {
+@ToString
+@DynamicUpdate
+public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
-
-    @Column
-    private int orderCount;
-
-    @Column
-    private String productDesign;
-
-    @Column
-    private String productModel;
+    private int favoriteId;
 
     @ManyToOne
     @JoinColumn(name = "memberId")

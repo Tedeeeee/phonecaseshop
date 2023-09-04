@@ -2,12 +2,10 @@ package com.project.phonecaseshop.controller;
 
 import com.project.phonecaseshop.entity.dto.productDto.ProductRequestDto;
 import com.project.phonecaseshop.entity.dto.productDto.ProductResponseDto;
-import com.project.phonecaseshop.responseApi.ApiResponse;
-import com.project.phonecaseshop.responseApi.CommonResult;
-import com.project.phonecaseshop.responseApi.ListResult;
-import com.project.phonecaseshop.responseApi.SingleResult;
+import com.project.phonecaseshop.responseApi.*;
 import com.project.phonecaseshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,8 +18,8 @@ public class ProductController {
 
     // 전체 상품 가져오기
     @GetMapping("")
-    public ListResult<ProductResponseDto> getProductList() {
-        return apiResponse.getListResult(productService.findProducts());
+    public SliceResult<ProductResponseDto> getProductList(Pageable pageable) {
+        return apiResponse.getSliceResult(productService.findProducts(pageable));
     }
 
     // 하나의 상품 가져오기
@@ -36,34 +34,21 @@ public class ProductController {
         return apiResponse.getListResult(productService.getMyProducts());
     }
 
-
     // 상품 생성
     @PostMapping("/new")
     public CommonResult createProduct(@RequestBody ProductRequestDto productRequestDto) {
-        String result = productService.createProduct(productRequestDto);
-
-        if (result.equals("제품이 생성되었습니다")) {
-            return apiResponse.getSuccessResult(1);
-        } else {
-            return apiResponse.getFailResult("500", result);
-        }
+        return apiResponse.getSuccessResult(productService.createProduct(productRequestDto));
     }
 
-    // 상품 수정하기
-//    @PutMapping("/{id}/change")
-//    public SingleResult<ProductResponseDto> updateProduct(@PathVariable int id, @RequestBody ProductRequestDto productRequestDto) {
-//        return apiResponse.getSingleResult(productService.)
-//    }
+     // 상품 수정하기
+    @PutMapping("/{productId}")
+    public CommonResult updateProduct(@PathVariable int productId, @RequestBody ProductRequestDto productRequestDto) {
+        return apiResponse.getSuccessResult(productService.updateProduct(productId, productRequestDto));
+    }
 
+    // 상품 삭제하기
     @DeleteMapping("/removal/{id}")
     public CommonResult deleteProduct(@PathVariable int id) {
-
-        String result = productService.removeProduct(id);
-
-        if (result.equals("제품이 제거되었습니다")) {
-            return apiResponse.getSuccessResult(1);
-        } else {
-            return apiResponse.getFailResult("500", result);
-        }
+        return apiResponse.getSuccessResult(productService.removeProduct(id));
     }
 }
