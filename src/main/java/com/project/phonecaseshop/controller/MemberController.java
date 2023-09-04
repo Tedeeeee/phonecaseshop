@@ -1,15 +1,14 @@
 package com.project.phonecaseshop.controller;
 
-import com.project.phonecaseshop.entity.RefreshToken;
 import com.project.phonecaseshop.entity.dto.memberDto.MemberRequestDto;
 import com.project.phonecaseshop.entity.dto.memberDto.MemberResponseDto;
 import com.project.phonecaseshop.responseApi.ApiResponse;
 import com.project.phonecaseshop.responseApi.CommonResult;
+import com.project.phonecaseshop.service.MailService;
 import com.project.phonecaseshop.service.MemberService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -17,6 +16,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MailService mailService;
     private final ApiResponse apiResponse;
 
     // 회원가입
@@ -48,5 +48,11 @@ public class MemberController {
     @GetMapping("")
     public MemberResponseDto findMember() {
         return memberService.findMember();
+    }
+
+    // 임시 비밀번호 전송과 저장
+    @GetMapping("/reset")
+    public CommonResult resetPassword(@RequestParam String memberEmail) throws MessagingException {
+        return apiResponse.getSuccessResult(mailService.sendEmail(memberEmail));
     }
 }

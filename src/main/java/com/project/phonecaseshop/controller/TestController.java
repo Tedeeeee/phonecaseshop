@@ -7,17 +7,12 @@ import com.project.phonecaseshop.entity.Photo;
 import com.project.phonecaseshop.repository.DesignRepository;
 import com.project.phonecaseshop.repository.ModelRepository;
 import com.project.phonecaseshop.repository.PhotoRepository;
-import com.project.phonecaseshop.responseApi.ApiResponse;
-import com.project.phonecaseshop.responseApi.ListResult;
-import com.project.phonecaseshop.responseApi.SingleResult;
-import com.project.phonecaseshop.responseApi.SliceResult;
+import com.project.phonecaseshop.responseApi.*;
+import com.project.phonecaseshop.service.AmazonS3Service;
 import com.project.phonecaseshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/etc")
@@ -28,7 +23,7 @@ public class TestController {
     private final DesignRepository designRepository;
     private final PhotoRepository photoRepository;
     private final ApiResponse apiResponse;
-    private final ProductService productService;
+    private final AmazonS3Service amazonS3Service;
 
     // Model 테이블 확인
     @GetMapping("/model")
@@ -48,10 +43,9 @@ public class TestController {
         return apiResponse.getListResult(designRepository.findAll());
     }
 
-    // AWS S3 사진 업로드 확인
-//    @PostMapping("/upload")
-//    public SingleResult<Photo> uploadFile() {
-//        return apiResponse.getSingleResult(productService)
-//    }
+    @DeleteMapping("/s3")
+    public CommonResult deleteFile(@RequestParam String name) {
+        return apiResponse.getSuccessResult(amazonS3Service.remove(name));
+    }
 
 }

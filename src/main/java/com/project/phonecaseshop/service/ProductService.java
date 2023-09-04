@@ -26,6 +26,7 @@ public class ProductService {
     private final ModelRepository modelRepository;
     private final DesignRepository designRepository;
     private final PhotoRepository photoRepository;
+    private final AmazonS3Service amazonS3Service;
 
     public int createProduct(ProductRequestDto productRequestDto) {
         String currentMemberId = SecurityUtil.getCurrentMemberId();
@@ -105,6 +106,11 @@ public class ProductService {
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             if (product.getMember().getMemberEmail().equals(currentMemberId)) {
+                List<Photo> productSet = photoRepository.findByProductId_ProductId(product.getProductId());
+                for (Photo photo : productSet) {
+                    String fileName = photo.getPhotoName();
+                    amazonS3Service.remove(fileName);
+                }
                 modelRepository.deleteByProductId_ProductId(product.getProductId());
                 designRepository.deleteByProductId_ProductId(product.getProductId());
                 photoRepository.deleteByProductId_ProductId(product.getProductId());

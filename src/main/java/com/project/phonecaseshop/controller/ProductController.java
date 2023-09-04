@@ -34,7 +34,6 @@ public class ProductController {
         return apiResponse.getListResult(productService.getMyProducts());
     }
 
-
     // 상품 생성
     @PostMapping("/new")
     public CommonResult createProduct(@RequestBody ProductRequestDto productRequestDto) {
@@ -47,6 +46,7 @@ public class ProductController {
         return apiResponse.getSuccessResult(productService.updateProduct(productId, productRequestDto));
     }
 
+    // 상품 삭제하기
     @DeleteMapping("/removal/{id}")
     public CommonResult deleteProduct(@PathVariable int id) {
         return apiResponse.getSuccessResult(productService.removeProduct(id));

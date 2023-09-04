@@ -19,7 +19,7 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(400, "유효하지 않은 타입이다."),
 
     IO_ERROR(400, "입/출력값이 옮바르지 않습니다"),
- 
+
     NULL_POINT_ERROR(404, "Null 발생");
 
     private int status;

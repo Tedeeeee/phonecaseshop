@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final List<Pattern> EXCLUDE_PATTERNS = Collections.unmodifiableList(Arrays.asList(
             Pattern.compile("/login"),
             Pattern.compile("/members/signup"),
+            Pattern.compile("/members/reset"),
             Pattern.compile("/products"),
             Pattern.compile("/products/\\d+"),
             Pattern.compile("/reviews/list/\\d+"),
