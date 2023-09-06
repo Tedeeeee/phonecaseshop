@@ -41,6 +41,7 @@ public class MemberController {
     // 회원정보 수정
     @PutMapping("")
     public CommonResult updateProfile(@RequestBody MemberRequestDto memberRequestDto) {
+        System.out.println("memberRequestDto = " + memberRequestDto);
         return apiResponse.getSuccessResult(memberService.updateProfile(memberRequestDto));
     }
 
