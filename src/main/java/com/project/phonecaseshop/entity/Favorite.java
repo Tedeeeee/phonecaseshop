@@ -11,26 +11,16 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder
 @ToString
 @DynamicUpdate
-public class Product {
-
+public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
+    private int favoriteId;
 
     @ManyToOne
     @JoinColumn(name = "memberId")
-    private Member member;
+    private Member memberId;
 
-    @Column
-    private int productPrice;
-
-    @Column(length = 30)
-    private String productName;
-
-    @Column
-    private int productDiscount;
-
-    @Column
-    private int productDeliveryPrice;
-
+    @ManyToOne
+    @JoinColumn(name = "productId")
+    private Product productId;
 }

@@ -42,7 +42,6 @@ public class Member {
     private String memberStatus;
 
     public void updateProfile(MemberRequestDto memberRequestDto) {
-        this.memberNickname = memberRequestDto.getMemberNickname();
         this.memberAddress = memberRequestDto.getMemberAddress();
         this.memberDetailAddress = memberRequestDto.getMemberDetailAddress();
     }

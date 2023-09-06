@@ -24,11 +24,8 @@ public class Review {
     @Column(length = 1000)
     private String reviewContent;
 
-    @Column(length = 1000)
-    private String reviewPhoto;
-
     @Column
-    private Date reviewDate;
+    private String reviewDate;
 
     @ManyToOne
     @JoinColumn(name = "productId")
