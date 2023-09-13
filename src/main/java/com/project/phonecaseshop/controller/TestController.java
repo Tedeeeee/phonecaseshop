@@ -4,6 +4,7 @@ import com.project.phonecaseshop.entity.Design;
 import com.project.phonecaseshop.entity.Member;
 import com.project.phonecaseshop.entity.Model;
 import com.project.phonecaseshop.entity.Photo;
+import com.project.phonecaseshop.entity.dto.productDto.ProductResponseDto;
 import com.project.phonecaseshop.repository.DesignRepository;
 import com.project.phonecaseshop.repository.ModelRepository;
 import com.project.phonecaseshop.repository.PhotoRepository;
@@ -24,6 +25,7 @@ public class TestController {
     private final PhotoRepository photoRepository;
     private final ApiResponse apiResponse;
     private final AmazonS3Service amazonS3Service;
+    private final ProductService productService;
 
     // Model 테이블 확인
     @GetMapping("/model")
@@ -48,4 +50,18 @@ public class TestController {
         return apiResponse.getSuccessResult(amazonS3Service.remove(name));
     }
 
+    @GetMapping("/list")
+    public ListResult<ProductResponseDto> AllListProducts() {
+        return apiResponse.getListResult(productService.findListProducts());
+    }
+
+    @GetMapping("/page")
+    public PageResult<ProductResponseDto> AllPageProducts(Pageable pageable) {
+        return apiResponse.getPageResult(productService.findPageProducts(pageable));
+    }
+
+    @GetMapping("/slice")
+    public SliceResult<ProductResponseDto> AllSliceProducts(Pageable pageable) {
+        return apiResponse.getSliceResult(productService.findProducts(pageable));
+    }
 }

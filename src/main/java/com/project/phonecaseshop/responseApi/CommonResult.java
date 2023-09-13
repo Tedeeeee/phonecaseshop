@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class CommonResult {
     private boolean success;
-    private int status;
+    private String status;
     private String msg;
 }

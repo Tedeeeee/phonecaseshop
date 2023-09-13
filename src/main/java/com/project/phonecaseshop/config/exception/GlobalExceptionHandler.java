@@ -2,25 +2,28 @@ package com.project.phonecaseshop.config.exception;
 
 import com.project.phonecaseshop.responseApi.ApiResponse;
 import com.project.phonecaseshop.responseApi.CommonResult;
+import com.project.phonecaseshop.service.SlackService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
     private final ApiResponse apiResponse;
-
-    @ExceptionHandler(BusinessExceptionHandler.class)
-    protected CommonResult handleBusinessExceptionHandler(BusinessExceptionHandler ex) {
-        return apiResponse.getFailResult(ErrorCode.BUSINESS_EXCEPTION_ERROR.getStatus(), ex.getMessage());
-    }
+    private final SlackService slackService;
 
     @ExceptionHandler(Exception.class)
     protected CommonResult handlerAllException(Exception ex) {
@@ -50,5 +53,25 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingRequestHeaderException.class)
     protected CommonResult handleMissingRequestHeaderException(MissingRequestHeaderException ex) {
         return apiResponse.getFailResult(ErrorCode.REQUEST_BODY_MISSING_ERROR.getStatus(), ex.getMessage());
+    }
+
+    @ExceptionHandler(BusinessExceptionHandler.class)
+    protected CommonResult handleBusinessExceptionHandler(BusinessExceptionHandler ex) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH시 mm분 ss초");
+        String currentTimeStr = currentTime.format(formatter);
+
+        String title = "BusinessException 에러 발생!";
+        HashMap<String, String> data = new HashMap<>();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String requestUrl = request.getRequestURL().toString();
+
+        data.put("Request URL", requestUrl);
+        data.put("발생 시간", currentTimeStr);
+        data.put("status 코드", ErrorCode.BUSINESS_EXCEPTION_ERROR.getStatus());
+        data.put("로그 메세지", ex.getMessage());
+
+        slackService.sendMessage(title, data);
+        return apiResponse.getFailResult(ErrorCode.BUSINESS_EXCEPTION_ERROR.getStatus(), ex.getMessage());
     }
 }

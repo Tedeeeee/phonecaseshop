@@ -9,6 +9,7 @@ import com.project.phonecaseshop.repository.*;
 import com.project.phonecaseshop.utils.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -70,8 +71,20 @@ public class ProductService {
         return 1;
     }
 
+    public List<ProductResponseDto> findListProducts() {
+        List<Product> list = productRepository.findAll();
+        return list.stream()
+                .map(this::convertToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public Page<ProductResponseDto> findPageProducts(Pageable pageable) {
+        Page<Product> Page = productRepository.findPageBy(PageRequest.of(100,100));
+        return Page.map(this::convertToResponseDto);
+    }
+
     public Slice<ProductResponseDto> findProducts(Pageable pageable) {
-        Slice<Product> sliceBy = productRepository.findSliceBy(pageable);
+        Slice<Product> sliceBy = productRepository.findSliceBy(PageRequest.of(100,100));
         return sliceBy.map(this::convertToResponseDto);
     }
 

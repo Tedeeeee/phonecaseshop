@@ -48,6 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Pattern.compile("/etc/photo"),
             Pattern.compile("/etc/design"),
             Pattern.compile("/etc/slice"),
+            Pattern.compile("/etc/list"),
+            Pattern.compile("/etc/page"),
             Pattern.compile("/orders/all")
     ));
 

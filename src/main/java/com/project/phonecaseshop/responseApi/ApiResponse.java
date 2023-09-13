@@ -45,7 +45,7 @@ public class ApiResponse {
         return result;
     }
 
-    public CommonResult getFailResult(int status, String cause) {
+    public CommonResult getFailResult(String status, String cause) {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
         result.setStatus(status);
